@@ -1,5 +1,6 @@
 from pyplasm import *
 
+SAND = [0.937, 0.867, 0.435]
 
 P_floor0 = floor0
 P_floor1 = T(3)(3)(floor1)
@@ -16,7 +17,7 @@ floor3_3d = T(3)(20.5)(PROD([floor3, Q(0)]))
 floor3_torri_3d = T(3)(20.5)(PROD([floor3_towers, Q(3.5)]))
 
 
-solid_model_3d = STRUCT([COLOR(RED)(floor0_3d), COLOR(YELLOW)(floor1_3d), COLOR(GREEN)(floor2_3d),
-					COLOR(BLUE)(floor3_3d), COLOR(ORANGE)(floor3_torri_3d)])
+solid_model_3d = STRUCT([COLOR(SAND)(floor0_3d), COLOR(SAND)(floor1_3d), COLOR(SAND)(floor2_3d),
+					COLOR(SAND)(floor3_3d), COLOR(SAND)(floor3_torri_3d)])
 
 VIEW(solid_model_3d)
