@@ -39,6 +39,18 @@ cinta_interna1 = MAP(circle(11.3))(INTERVALS(2*PI)(8))
 cortina_esterna1 = MAP(circle(25.6))(INTERVALS(2*PI)(8))
 cortina_interna1 = MAP(circle(8.9))(INTERVALS(2*PI)(8))
 
+colonnina1_1 = T([1,2])([14, 6])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+colonnina4_1 = T([1,2])([-14, 6])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+colonnina5_1 = T([1,2])([-14, -6])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+colonnina8_1 = T([1,2])([14, -6])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+
+colonnina2_1 = T([1,2])([6, 14])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+colonnina7_1 = T([1,2])([6, -14])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+colonnina3_1 = T([1,2])([-6, 14])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+colonnina6_1 = T([1,2])([-6, -14])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+
+
+
 torre1_1 = T([1,2])([20.718,20.718])(MAP(circle(3.9))(INTERVALS(2*PI)(8)))
 colonna1_1 = T([1,2])([20.718,20.718])(MAP(circle(0.11))(INTERVALS(2*PI)(32)))
 finta_scala1_1 = T([1,2])([20.718,20.718])(MAP(circle(1.3))(INTERVALS(2*PI)(8)))
@@ -82,7 +94,9 @@ floor1 = STRUCT([cinta_esterna1, cinta_interna1, cortina_interna1, cortina_ester
 				torre5_1, colonna5_1, scala5_1,
 				torre6_1, colonna6_1, finta_scala6_1,
 				torre7_1, colonna7_1, scala7_1,
-				 torre8_1, colonna8_1, finta_scala8_1])
+				torre8_1, colonna8_1, finta_scala8_1,
+				colonnina1_1, colonnina2_1, colonnina3_1, colonnina4_1, 
+				colonnina5_1, colonnina6_1, colonnina7_1, colonnina8_1])
 
 
 ########################################################################
@@ -92,6 +106,17 @@ cinta_esterna2 = MAP(circle(28))(INTERVALS(2*PI)(8))
 cinta_interna2 = MAP(circle(11.3))(INTERVALS(2*PI)(8))
 cortina_esterna2 = MAP(circle(25.6))(INTERVALS(2*PI)(8))
 cortina_interna2 = MAP(circle(8.9))(INTERVALS(2*PI)(8))
+
+colonnina1_2 = T([1,2])([14, 6])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+colonnina4_2 = T([1,2])([-14, 6])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+colonnina5_2 = T([1,2])([-14, -6])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+colonnina8_2 = T([1,2])([14, -6])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+
+colonnina2_2 = T([1,2])([6, 14])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+colonnina7_2 = T([1,2])([6, -14])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+colonnina3_2 = T([1,2])([-6, 14])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+colonnina6_2 = T([1,2])([-6, -14])(MAP(circle(0.5))(INTERVALS(2*PI)(32)))
+
 
 torre1_2 = T([1,2])([20.718,20.718])(MAP(circle(3.9))(INTERVALS(2*PI)(8)))
 colonna1_2 = T([1,2])([20.718,20.718])(MAP(circle(0.11))(INTERVALS(2*PI)(32)))
@@ -136,7 +161,9 @@ floor2 = STRUCT([cinta_esterna2, cinta_interna2, cortina_interna2, cortina_ester
 				torre5_2, colonna5_2, scala5_2,
 				torre6_2, colonna6_2, finta_scala6_2,
 				torre7_2, colonna7_2, scala7_2,
-				torre8_2, colonna8_2, finta_scala8_2])
+				torre8_2, colonna8_2, finta_scala8_2,
+				colonnina1_2, colonnina2_2, colonnina3_2, colonnina4_2, 
+				colonnina5_2, colonnina6_2, colonnina7_2, colonnina8_2])
 
 
 ########################################################################
@@ -192,4 +219,4 @@ floor3 = STRUCT([cinta_esterna3, cinta_interna3, cortina_interna3, cortina_ester
 				torre7_3, colonna7_3, scala7_3,
 				torre8_3, colonna8_3, finta_scala8_3])
 
-VIEW(floor3)
+VIEW(floor0)
