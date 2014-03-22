@@ -17,7 +17,7 @@ floor3_3d = T(3)(20.5)(PROD([floor3, Q(0)]))
 floor3_torri_3d = T(3)(20.5)(PROD([floor3_towers, Q(3.5)]))
 
 
-solid_model_3d = STRUCT([COLOR(SAND)(floor0_3d), COLOR(SAND)(floor1_3d), COLOR(SAND)(floor2_3d),
+solid_model_3d = STRUCT([COLOR(WHITE)(floor0_3d), COLOR(SAND)(floor1_3d), COLOR(SAND)(floor2_3d),
 					COLOR(SAND)(floor3_3d), COLOR(SAND)(floor3_torri_3d)])
 
 VIEW(solid_model_3d)
