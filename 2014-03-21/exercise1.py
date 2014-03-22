@@ -168,7 +168,7 @@ floor2 = STRUCT([cinta_esterna2, cinta_interna2, cortina_interna2, cortina_ester
 
 ########################################################################
 #####################FLOOR 3############################################
-"""Tetto"""
+"""Tetto - Le torri sono più alte rispetto all'edificio"""
 cinta_esterna3 = MAP(circle(28))(INTERVALS(2*PI)(8))
 cinta_interna3 = MAP(circle(11.3))(INTERVALS(2*PI)(8))
 cortina_esterna3 = MAP(circle(25.6))(INTERVALS(2*PI)(8))
@@ -209,7 +209,8 @@ finta_scala8_3 = T(1)(29.3)(MAP(circle(1.3))(INTERVALS(2*PI)(8)))
 
 
 
-floor3 = STRUCT([cinta_esterna3, cinta_interna3, cortina_interna3, cortina_esterna3,
+floor3 = STRUCT([cinta_esterna3, cinta_interna3, cortina_interna3, cortina_esterna3])
+floor3_torri = STRUCT([
 				torre1_3, colonna1_3, finta_scala1_3,
 				torre2_3, colonna2_3, finta_scala2_3,
 				torre3_3, colonna3_3, scala3_3,
@@ -217,6 +218,18 @@ floor3 = STRUCT([cinta_esterna3, cinta_interna3, cortina_interna3, cortina_ester
 				torre5_3, colonna5_3, scala5_3,
 				torre6_3, colonna6_3, finta_scala6_3,
 				torre7_3, colonna7_3, scala7_3,
-				torre8_3, colonna8_3, finta_scala8_3])
+				torre8_3, colonna8_3, finta_scala8_3]) #Siccome le torri sono piu' alte (e di conseguenza le scale)
+													   #sono messe in una struct diversa
 
-VIEW(floor0)
+######################################################################################
+floorProva = SKELETON(2)(floor0)
+P_floor0 = floor0
+P_floor1 = T(3)(3)(floor1)
+P_floor2 = T(3)(9.5)(floor2)
+P_floor3 = T(3)(20.5)(floor3)
+P_floor3_torri = T(3)(24)(floor3_torri)
+
+building = STRUCT([P_floor0, P_floor1, P_floor2, P_floor3, P_floor3_torri])
+
+
+VIEW(building)
