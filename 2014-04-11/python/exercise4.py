@@ -278,8 +278,6 @@ treeRow1 = STRUCT(NN(10)(pair_y))
 treeRow1 = T([1,2])([16,-70])(treeRow1)
 treeRow2 = T([1])([22])(treeRow1)
 
-
-
 """Street lamp"""
 trunk_l = (CIRCLE(0.1)([8,8]))
 trunk_l = PROD([trunk_l, Q(4)])
@@ -297,11 +295,27 @@ street = AA(MK)(points_street)
 street = AA(JOIN)([street])
 street = COLOR(STONE)(STRUCT(street))
 
+"""Flowers"""
+stem = (CIRCLE(0.05)([16,16]))
+stem = COLOR(GREEN)(PROD([stem, Q(0.5)]))
+crown = T(3)(0.5)(SPHERE(0.1)([8,8]))
+flower_y = STRUCT([stem,(COLOR(YELLOW)(crown))])
+
+PINK = [1,0.411,0.706]
+flower_p = STRUCT([stem,(COLOR(PINK)(crown))])
+
+
+"""Flower containers"""
+cont_ext = CUBOID([2,2,1])
+cont_int = COLOR(TRUNK)(CUBOID([0.5,0.5,1]))
+container = STRUCT([cont_ext,cont_int])
+contain_flow1 = T([1,2,3])([0.5,0.5,1])(flower_y)
+contain_flow2 = T([1,2,3])([0.7,0,5,1])(flower_p)
+cont = T([1,2])([22,-70])(STRUCT([contain_flow1, contain_flow2, container]))
 
 
 
-
-VIEW(STRUCT([model_3d,green_terr,neighborhood, lampRow1, lampRow2, street, treeRow1, treeRow2]))
+VIEW(STRUCT([model_3d,green_terr,neighborhood, lampRow1, lampRow2, street, treeRow1, treeRow2, cont]))
 
 
 

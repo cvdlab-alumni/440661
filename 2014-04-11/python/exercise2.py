@@ -180,16 +180,11 @@ model_3d = STRUCT([model, floor0, columns, floor1, floor1_main, roof])
 
 """WINDOWS"""
 
-P_win1 = [[26.5,-12,13],[27.5,-12,13],[26.5,-12,14],[27.5,-12,14]]
-P_win1 = AA(MK)(P_win1)
-win1 = AA(JOIN)([P_win1])
-win1 = STRUCT(win1)
 
 
+model_3d = STRUCT([model_3d,win1])
 
-model_3d = DIFFERENCE([model_3d,win1])
-
-#VIEW(model_3d)
+VIEW(model_3d)
 
 
 
