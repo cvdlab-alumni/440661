@@ -260,8 +260,48 @@ asph_terr = AA(JOIN)([P_terr])
 asph_terr = STRUCT(asph_terr)
 asph_terr = STRUCT([COLOR(ASPHALT)(asph_terr)])
 
+"""==============================================================EX4======================================================="""
 
-VIEW(STRUCT([model_3d,green_terr,neighborhood]))
+#Colours
+CROWN = [0,0.992,0]
+TRUNK = [0.361,0.2,0.09]
+LAMP = [1,1,0,0.5]
+STONE = [0.545,0.553,0.478]
+
+"""Tree"""
+trunk = (CIRCLE(0.25)([8,8]))
+trunk = PROD([trunk, Q(4)])
+crown = T(3)(4)(COLOR(CROWN)(SPHERE(1)([8,8])))
+tree = STRUCT([(COLOR(TRUNK)(trunk)),crown])
+pair_y = [T([2])([4]), tree]
+treeRow1 = STRUCT(NN(10)(pair_y))
+treeRow1 = T([1,2])([16,-70])(treeRow1)
+treeRow2 = T([1])([22])(treeRow1)
+
+
+
+"""Street lamp"""
+trunk_l = (CIRCLE(0.1)([8,8]))
+trunk_l = PROD([trunk_l, Q(4)])
+lamp = T(3)(4)(COLOR(LAMP)(SPHERE(0.4)([8,8])))
+lamp = STRUCT([(COLOR(ASPHALT)(trunk_l)),lamp])
+
+pair_y = [T([2])([4]), lamp]
+lampRow1 = STRUCT(NN(10)(pair_y))
+lampRow1 = T([1,2])([19,-70])(lampRow1)
+lampRow2 = T([1])([16])(lampRow1)
+
+"""Street"""
+points_street = [[19,-90],[19,-15],[35,-15],[35,-90]]
+street = AA(MK)(points_street)
+street = AA(JOIN)([street])
+street = COLOR(STONE)(STRUCT(street))
+
+
+
+
+
+VIEW(STRUCT([model_3d,green_terr,neighborhood, lampRow1, lampRow2, street, treeRow1, treeRow2]))
 
 
 
