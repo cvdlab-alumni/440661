@@ -53,12 +53,17 @@ south_room = POLYLINE(SOUTH_ROOM)
 seast_room = POLYLINE(SEAST_ROOM)
 #court = POLYLINE(COURT)
 
+
+#Colours
+BASE = [0.98,0.98,0.824]
+CASTLE = [0.933,0.909,0.667]
+
 """FLOOR0"""
 P_floor = AA(MK)(V_EXT)
 floor = AA(JOIN)([P_floor])
 
 floor = STRUCT(floor)
-floor0 = PROD([floor,Q(3)])
+floor0 = COLOR(BASE)(PROD([floor,Q(3)]))
 
 #Columns of the rooms
 column_e = (CIRCLE(0.5)([32,32]))
@@ -176,16 +181,29 @@ floor1_main =  T([3])(13)(model_floor1)
 roof = T([3])(13)(floor1)
 
 """FINAL MODEL"""
-model_3d = STRUCT([model, floor0, columns, floor1, floor1_main, roof])
+model_3d = COLOR(CASTLE)(STRUCT([model,columns, floor1, floor1_main, roof]))
+model_3d = STRUCT([model_3d,floor0])
+
 """=================================================================EX3==================================================="""
 
 
 """NEIGHBORHOOD"""
+#Colours used
+GRASS_GREEN = [0.004,0.651, 0.067]
+SAND = [0.937,0.867,0.435]
+BROWN = [0.627,0.322,0.176]
 
+
+#House
 base = COLOR(WHITE)(CUBOID([5,5,5]))
-points = [[0,0,5], [0,5,5], [5,5,5], [2.5,2.5,7], [5,0,5]]
-roof = COLOR(RED)(JOIN(AA(MK)(points)))
-house = STRUCT([base,roof])
+points_window = [[1,2,2], [2,2,2], [1,3,2], [2,3,2]]
+window = T([1,3])([0.5,2])(COLOR(BLUE)(CUBOID([1,1,1])))
+door = T([1,3])([2.5])(COLOR(BROWN)(CUBOID([1,2,1])))
+points_roof = [[0,0,5], [0,5,5], [5,5,5], [2.5,2.5,7], [5,0,5]]
+roof = COLOR(RED)(JOIN(AA(MK)(points_roof)))
+house = STRUCT([base,roof,window, door])
+
+
 
 pair_x = [T([1])([7]), house]
 houseRow = STRUCT(NN(10)(pair_x))
@@ -195,8 +213,7 @@ houseRow = T([1,2])([-10,60])(houseRow)
 
 
 """Terrain"""
-GRASS_GREEN = [0.004,0.651, 0.067]
-SAND = [0.937,0.867,0.435]
+
 
 V_SAND_TERR = [[-10,50], [-10, -30], [64,-30], [64,50]]
 P_terr = AA(MK)(V_SAND_TERR)
@@ -211,6 +228,7 @@ P_terr = AA(MK)(V_GREEN_TERR)
 green_terr = AA(JOIN)([P_terr])
 green_terr = STRUCT(green_terr)
 green_terr = STRUCT([COLOR(GRASS_GREEN)(green_terr)])
+
 
 VIEW(STRUCT([model_3d,green_terr, sand_terr, houseRow]))
 
