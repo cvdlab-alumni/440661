@@ -252,5 +252,5 @@ P_floor3_torri = T(3)(24)(COLOR([0.2,0,1])(floor3_towers))
 
 two_and_half_model = STRUCT([P_floor0, P_floor1, P_floor2, P_floor3, P_floor3_torri])
 
-#VIEW(two_and_half_model)
+VIEW(two_and_half_model)
 
