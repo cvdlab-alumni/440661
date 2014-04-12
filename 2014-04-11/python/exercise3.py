@@ -192,7 +192,8 @@ model_3d = STRUCT([model_3d,floor0])
 GRASS_GREEN = [0.004,0.651, 0.067]
 SAND = [0.937,0.867,0.435]
 BROWN = [0.627,0.322,0.176]
-
+ASPHALT = [0.157,0.169,0.165]
+PICASSO = [0.008,0.463,0.992]
 
 #House
 base = COLOR(WHITE)(CUBOID([5,5,5]))
@@ -203,13 +204,28 @@ points_roof = [[0,0,5], [0,5,5], [5,5,5], [2.5,2.5,7], [5,0,5]]
 roof = COLOR(RED)(JOIN(AA(MK)(points_roof)))
 house = STRUCT([base,roof,window, door])
 
+#church
+base_c = COLOR(WHITE)(CUBOID([5,5,8]))
+points_window = [[1,2,2], [2,2,2], [1,3,2], [2,3,2]]
+window = T([1,3])([0.5,2])(COLOR(BLUE)(CUBOID([1,1,1])))
+door = T([1,3])([2.5])(COLOR(BROWN)(CUBOID([1,2,1])))
+points_roof = [[0,0,5], [0,5,5], [5,5,5], [2.5,2.5,7], [5,0,5]]
+next_building = T(1)(4)(base)
+window_c = T([1,3])([6,2])(COLOR(BLUE)(CUBOID([1,1,1])))
+roof_c = T(3)(3)(COLOR(RED)(JOIN(AA(MK)(points_roof))))
+church = STRUCT([base_c,roof_c,window, window_c, door, next_building])
 
 
-pair_x = [T([1])([7]), house]
-houseRow = STRUCT(NN(10)(pair_x))
+#skyscraper
+skyscraper = COLOR(PICASSO)((CUBOID([10,10,60])))
+
+pair_x = [T([1])([20]), house]
+houseRow = STRUCT(NN(3)(pair_x))
 houseRow = T([1,2])([-10,60])(houseRow)
 #VIEW(houseRow)
 
+neighborhood = STRUCT([houseRow, (T([1,2])([-30,59])(church)), (T([1,2])([70,20])(skyscraper)), (T([1,2])([54,-45])(church)),
+  (T([1,2])([-25,-45])(house))])
 
 
 """Terrain"""
@@ -229,8 +245,14 @@ green_terr = AA(JOIN)([P_terr])
 green_terr = STRUCT(green_terr)
 green_terr = STRUCT([COLOR(GRASS_GREEN)(green_terr)])
 
+V_ASPH_TERR = [[-50,90], [-50, -90], [104,-90], [104,90]]
+P_terr = AA(MK)(V_ASPH_TERR)
+asph_terr = AA(JOIN)([P_terr])
+asph_terr = STRUCT(asph_terr)
+asph_terr = STRUCT([COLOR(ASPHALT)(asph_terr)])
 
-VIEW(STRUCT([model_3d,green_terr, sand_terr, houseRow]))
+
+VIEW(STRUCT([model_3d,green_terr, sand_terr,asph_terr, neighborhood]))
 
 
 
