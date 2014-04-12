@@ -26,10 +26,27 @@ V_EXT2 = [[0,0],[0,-3],[2,-5],[5,-5],[7,-3],[14,-10],[12,-12],[12,-15],[14,-17],
 vertical_encl_floor1 = POLYLINE(V_EXT2)
 vertical_encl_floor0 = POLYLINE(V_EXT)
 
+#colour
+PICASSO = [0.008,0.463,0.992, 0.5]
+
+#Windows
+win_e = COLOR(PICASSO)(CUBOID([1,0,3]))
+win_e = T([1,2,3])([27,-12,22])(win_e)
+
+win_n = COLOR(PICASSO)(CUBOID([1,0,3]))
+win_n = T([1,2,3])([49,10,22])(win_n)
+
+win_w = COLOR(PICASSO)(CUBOID([1,0,3]))
+win_w = T([1,2,3])([27,32,22])(win_w)
+
+win_s = COLOR(PICASSO)(CUBOID([1,0,3]))
+win_s = T([1,2,3])([5,10,22])(win_s)
+
+win = STRUCT([win_n,win_e, win_w, win_s])
+
 vertical_encl0 = PROD([vertical_encl_floor0,Q(20)])
 vertical_encl1 = T(3)(20)(PROD([vertical_encl_floor1,Q(20)]))
-
-vertical_enclosure = STRUCT([vertical_encl0,vertical_encl1])
+vertical_enclosure = STRUCT([vertical_encl0,vertical_encl1, win])
 
 VIEW(vertical_enclosure)
 

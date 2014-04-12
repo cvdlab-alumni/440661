@@ -167,7 +167,27 @@ floor1_main =  T([3])(13)(model_floor1)
 """ROOF"""
 roof = T([3])(13)(floor1)
 
+#colour
+PICASSO = [0.008,0.463,0.992, 0.5]
+
+"""Windows"""
+#Windows
+win_e = COLOR(PICASSO)(CUBOID([1,0,3]))
+win_e = T([1,2,3])([27,-12,15])(win_e)
+
+win_n = COLOR(PICASSO)(CUBOID([1,0,3]))
+win_n = T([1,2,3])([49,10,15])(win_n)
+
+win_w = COLOR(PICASSO)(CUBOID([1,0,3]))
+win_w = T([1,2,3])([27,32,15])(win_w)
+
+win_s = COLOR(PICASSO)(CUBOID([1,0,3]))
+win_s = T([1,2,3])([5,10,15])(win_s)
+
+win = STRUCT([win_n,win_e, win_w, win_s])
+
+
 """FINAL MODEL"""
 model_3d = COLOR(CASTLE)(STRUCT([model,columns, floor1, floor1_main, roof]))
-model_3d = STRUCT([model_3d,floor0])
+model_3d = STRUCT([model_3d,floor0,win])
 VIEW(model_3d)

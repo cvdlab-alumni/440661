@@ -80,9 +80,9 @@ asph_terr = STRUCT(asph_terr)
 asph_terr = STRUCT([COLOR(ASPHALT)(asph_terr)])
 
 """Final model"""
-final_model = STRUCT([model_3d,green_terr,neighborhood])
+model_3d = STRUCT([model_3d,green_terr,neighborhood])
 
-VIEW(final_model)
+VIEW(model_3d)
 
 
 
