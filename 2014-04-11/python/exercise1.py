@@ -10,21 +10,16 @@ from mapper import *
 
 
 V_EXT = [[0,0],[0,-3],[2,-5],[5,-5],[7,-3],[14,-10],[12,-12],[12,-15],[14,-17],[17,-17],[19,-15],[19,-12],
-#bordello
-
 [25,-12],[25,-10],[17,-10],[19,-3],[25,-3],[25,0],[19,0],[17,2],[17,18],[19,20],[35,20],[37,18],[37,2],[35,0],[29,0],
 [29,-3],[35,-3],[37,-10],[29,-10],[29,-12],
-#bordello
 [35,-12],[35,-15],[37,-17],
 [40,-17],[42,-15],[42,-12],[40,-10],[47,-3],[49,-5],[52,-5],[54,-3],[54,0],[52,2],[49,2],[49,18],[52,18],[54,20],[54,23],[52,25],
 [49,25],[47,23],[40,30],[42,32],[42,35],[40,37],[37,37],[35,35],[35,32],[19,32],[19,35],[17,37],[14,37],[12,35],[12,32],[14,30],
 [7,23],[5,25],[2,25],[0,23],[0,20],[2,18],[5,18],[5,2],[2,2],[0,0]]
 
 V_INT = [[19,-3],
-#bordello2
 [25,-3],[25,0],[19,0],[17,2],[17,18],[19,20],[35,20],[37,18],[37,2],[35,0],[29,0],
 [29,-3],
-#bordello2
 [35,-3],[40,2],[40,18], [35,23],[19,23],[14,18],[14,2],[19,-3]]
 V_INT2 = [[19,-3], [35,-3],[40,2],[40,18], [35,23],[19,23],[14,18],[14,2],[19,-3]]
 #EAST_ROOM = [[17,-10], [37,-10],[35,-3],[19,-3],[17,-10]] 
@@ -36,14 +31,11 @@ SWEST_ROOM = [[19,23], [17,30],[5,20],[14,18],[19,23]]
 SWEST_ROOM = [[19,23], [17,30],[7,20],[14,18],[19,23]]
 SOUTH_ROOM = [[7,0], [14,2],[14,18],[7,20],[7,0]]
 SEAST_ROOM = [[7,0], [14,2],[19,-3],[17,-10],[7,0]]
-#COURT = [[19,0], [35,0],[37,2],[37,18],[35,20],[19,20],[17,18],[17,2],[19,0]]
-
 
 
 
 fondamenta_ext = POLYLINE(V_EXT)
 fondamenta_int = POLYLINE(V_INT)
-#east_room = POLYLINE(EAST_ROOM)
 neast_room = POLYLINE(NEAST_ROOM)
 north_room = POLYLINE(NORTH_ROOM)
 nwest_room = POLYLINE(NWEST_ROOM)
@@ -51,14 +43,18 @@ west_room = POLYLINE(WEST_ROOM)
 swest_room = POLYLINE(SWEST_ROOM)
 south_room = POLYLINE(SOUTH_ROOM)
 seast_room = POLYLINE(SEAST_ROOM)
-#court = POLYLINE(COURT)
+
+
+#Colours
+BASE = [0.98,0.98,0.824]
+CASTLE = [0.933,0.909,0.667]
 
 """FLOOR0"""
 P_floor = AA(MK)(V_EXT)
 floor = AA(JOIN)([P_floor])
 
 floor = STRUCT(floor)
-floor0 = PROD([floor,Q(3)])
+floor0 = COLOR(BASE)(PROD([floor,Q(3)]))
 
 #Columns of the rooms
 column_e = (CIRCLE(0.5)([32,32]))
@@ -128,20 +124,17 @@ columnVIII = T([1,2])([15.5,-13.5])(columnVIII)
 #columnVIII = PROD([columnVIII, Q(15)])
 
 columns = STRUCT([column_e, column_w, column_s, column_n, column_ne,
-	column_nw, column_sw, column_se, columnI, columnII, columnIII, columnIV, columnV,
-	columnVI, columnVII, columnVIII])
+  column_nw, column_sw, column_se, columnI, columnII, columnIII, columnIV, columnV,
+  columnVI, columnVII, columnVIII])
 columns = PROD([columns,Q(26)])
 
 model = STRUCT([fondamenta_int,fondamenta_ext, neast_room, north_room
-	,nwest_room,west_room, swest_room, south_room, seast_room])
+  ,nwest_room,west_room, swest_room, south_room, seast_room])
 model = (PROD([model,Q(13)]))
 
-#VIEW(model)
 
 
 """SECOND FLOOR"""
-#V_FLOOR1 = [[17,-10],[37,-10],[47,0],[47,20],[37,30],[17,30],[7,20],
-#		[7,0],[17,-10]]
 V_FLOOR1 = [[19,-12],[35,-12],[40,-10],[47,-3],[49,2],[49,18],[47,23],[40,30],
 [35,32],[19,32],[14,30],[7,23],[5,18],[5,2],[7,-3],[14,-10]]
 P_int = AA(MK)(V_INT)
@@ -165,21 +158,16 @@ fondamenta_ext2 = POLYLINE(V_EXT2)
 
 
 model_floor1 = STRUCT([fondamenta_int,fondamenta_ext2, neast_room, north_room
-	,nwest_room,west_room, swest_room, south_room, seast_room])
+  ,nwest_room,west_room, swest_room, south_room, seast_room])
 model_floor1 = (PROD([model_floor1,Q(13)]))
 
 
 floor1_main =  T([3])(13)(model_floor1)
-#VIEW((floor1))
 
 """ROOF"""
 roof = T([3])(13)(floor1)
 
 """FINAL MODEL"""
-model_3d = STRUCT([model, floor0, columns, floor1, floor1_main, roof])
-
+model_3d = COLOR(CASTLE)(STRUCT([model,columns, floor1, floor1_main, roof]))
+model_3d = STRUCT([model_3d,floor0])
 VIEW(model_3d)
-
-
-
-
