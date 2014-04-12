@@ -175,8 +175,10 @@ floor1_main =  T([3])(13)(model_floor1)
 """ROOF"""
 roof = T([3])(13)(floor1)
 
+"""FINAL MODEL"""
+model_3d = STRUCT([model, floor0, columns, floor1, floor1_main, roof])
 
-VIEW(STRUCT([model, floor0, columns, floor1, floor1_main, roof]))
+VIEW(model_3d)
 
 
 
