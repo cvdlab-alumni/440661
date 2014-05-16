@@ -38,16 +38,29 @@ hpc = cellNumbering (master,hpc)(range(len(master[1])),CYAN,2)
 
 toRemove = [74]
 master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+#VIEW(hpc)
 
-"""Kitchen door"""
-toMerge = 30
+#Hall window
+toMerge = 3
+windowDiagram = assemblyDiagramInit([1,8,5])([[.3],[.1,1,.1,1,.1,1,.1,1],[.3,1,.1,1,.5]])
+master = diagram2cell(windowDiagram,master,toMerge)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),CYAN,2) 
+#VIEW(hpc)
+
+toRemove = [94,104,92,102]
+master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+#DRAW(master)
+
+"""Kitchen - aka the room down on the right"""
+toMerge = 29
 diagram = assemblyDiagramInit([1,3,2])([[.3],[3,1,3],[2.4,.3]])
 master = diagram2cell(diagram,master,toMerge)
 hpc = SKEL_1(STRUCT(MKPOLS(master)))
 hpc = cellNumbering (master,hpc)(range(len(master[1])),CYAN,2)
 VIEW(hpc)
 
-toRemove = [78]
+toRemove = [113]
 master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
 
 
