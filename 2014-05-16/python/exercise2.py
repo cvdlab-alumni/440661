@@ -65,17 +65,30 @@ stairColumn = larApply(t(0,-3,0))(larRod(0.25,4.2)())
 stairs3D = evalStruct(Struct([stairColumn,stair,t(0,0,4)]*4))
 stairs = (STRUCT(CAT(AA(MKPOLS)(stairs3D))))
 
+"""Hill"""
+c10 = larBezier(S1)([[0,0,0],[10,0,0]])
+c11 = larBezier(S1)([[0,10,0],[2.5,10,3],[5,10,-3],[7.5,10,3],[10,10,0]])
+c20 = larBezier(S2)([[0,0,0],[0,0,3],[0,10,3],[0,10,0]])
+c21 = larBezier(S2)([[10,0,0],[10,5,3],[10,10,0]])
+dom = larDomain([10])
+dom2D = larModelProduct([dom, dom])
+out = larMap(larCoonsPatch([c10,c11,c20,c21]))(dom2D)
+
+
 """Assembling"""
 
 master = COLOR(pink9)(STRUCT(MKPOLS(master)))
 top = STRUCT(MKPOLS(top))
 corridor = (STRUCT(MKPOLS(corridor)))
 master_rotate = R([1,2])(160.222)(master)
-
+hill = R([1,2])(79.999)(COLOR(GREEN)(STRUCT(MKPOLS(out))))
 
 floor = STRUCT([master, T([2])([-18.5])(corridor), (T([1,2])([11.65,-18.5])(master_rotate))])
 roof = STRUCT([top, T([2])([-18.5])(top), (T([2])([-37])(top))])
 dwelling = STRUCT([floor, T(3)(3)(floor), T(3)(6)(floor), T(3)(9)(floor), T(3)(12)(floor), T(3)(15)(roof), T([1,2])([8,-5])(stairs)])
+ground = STRUCT([T(2)(-10)(hill), T(2)(17)(hill)])
 
 
-VIEW(dwelling)
+model = STRUCT([T([1,2,3])([5,-3.5,4.5])(dwelling), ground])
+
+VIEW(model)
