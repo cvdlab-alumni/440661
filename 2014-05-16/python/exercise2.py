@@ -57,6 +57,14 @@ corridor = corridor[0], [cell for k,cell in enumerate(corridor[1]) if not (k in 
 
 #DRAW(corridor)
 
+"""Stairs"""
+stair = spiralStair(width=0.2,R=3,r=0.25,riser=0.1,pitch=4.4,nturns=1.5,steps=24)
+stair = larApply(r(0,0,3*PI/4))(stair)
+stair = larApply(t(0,-3,0))(stair)
+stairColumn = larApply(t(0,-3,0))(larRod(0.25,4.2)())
+stairs3D = evalStruct(Struct([stairColumn,stair,t(0,0,4)]*4))
+stairs = (STRUCT(CAT(AA(MKPOLS)(stairs3D))))
+
 """Assembling"""
 
 master = COLOR(pink9)(STRUCT(MKPOLS(master)))
@@ -65,19 +73,9 @@ corridor = (STRUCT(MKPOLS(corridor)))
 master_rotate = R([1,2])(160.222)(master)
 
 
-stair = spiralStair(width=0.2,R=3,r=0.25,riser=0.1,pitch=4.4,nturns=1.75,steps=36)
-stair = larApply(r(0,0,3*PI/4))(stair)
-stair = larApply(t(0,-3,0))(stair)
-stairColumn = larApply(t(0,-3,0))(larRod(0.25,4.2)())
-assembly3D = evalStruct(Struct([stairColumn,stair,t(0,0,4)]*12))
-stairs = (STRUCT(CAT(AA(MKPOLS)(assembly3D))))
-
-
 floor = STRUCT([master, T([2])([-18.5])(corridor), (T([1,2])([11.65,-18.5])(master_rotate))])
 roof = STRUCT([top, T([2])([-18.5])(top), (T([2])([-37])(top))])
-dwelling = STRUCT([floor, T(3)(3)(floor), T(3)(6)(floor), T(3)(9)(floor), T(3)(12)(floor), T(3)(15)(roof)])
+dwelling = STRUCT([floor, T(3)(3)(floor), T(3)(6)(floor), T(3)(9)(floor), T(3)(12)(floor), T(3)(15)(roof), T([1,2])([8,-5])(stairs)])
 
-
-#VIEW(STRUCT([stair, stairColumn]))
 
 VIEW(dwelling)
