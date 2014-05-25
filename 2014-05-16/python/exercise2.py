@@ -2,12 +2,6 @@ from exercise1 import *
 from splines import *
 pink9 = [1,0.855,0.725]
 
-"""Top of the dwelling"""
-top = assemblyDiagramInit([3,3,2])([[.3,14.1,.3],[.3,15.6,.3],[.3,2.7]])
-V,CV = top
-hpc = SKEL_1(STRUCT(MKPOLS(top)))
-hpc = cellNumbering (top,hpc)(range(len(CV)),CYAN,2)
-
 """Corridor"""
 ###################################
 #Corridor_base
@@ -15,7 +9,6 @@ Corridor_base = assemblyDiagramInit([5,3,2])([[.3,4.9,.1,8.8,.3],[.3,5,.3],[.3,3
 V,CV = Corridor_base
 hpc_corridor_base = SKEL_1(STRUCT(MKPOLS(Corridor_base)))
 hpc_corridor_base = cellNumbering (Corridor_base,hpc_corridor_base)(range(len(CV)),CYAN,2)
-#VIEW(hpc_corridor)
 
 toRemove = [9,15,21]
 Corridor_base = Corridor_base[0], [cell for k,cell in enumerate(Corridor_base[1]) if not (k in toRemove)]
@@ -36,7 +29,6 @@ corridor = assemblyDiagramInit([5,3,2])([[.3,4.9,.1,8.8,.3],[.3,5,.3],[.3,2.7]])
 V,CV = corridor
 hpc_corridor = SKEL_1(STRUCT(MKPOLS(corridor)))
 hpc_corridor = cellNumbering (corridor,hpc_corridor)(range(len(CV)),CYAN,2)
-#VIEW(hpc_corridor)
 
 toRemove = [9,8,15,21]
 corridor = corridor[0], [cell for k,cell in enumerate(corridor[1]) if not (k in toRemove)]
@@ -93,8 +85,7 @@ stair_floor = STRUCT([stair1, T([1,2,3])([0,2,1.3])(R([1,2])(PI/2)(stair1))
 					,T([1,2,3])([-2,2,2.6])(R([1,2])(PI)(stair1)),
    					T([1,2,3])([-2,0,3.5])(R([1,2])(3*PI/2)(stair1))
    					])
-#stair_floor = R([1,2])(PI/2)(stair_floor)
-#VIEW(stair_floor)
+
 
 """Hill"""
 c10 = larBezier(S1)([[0,0,0],[10,0,0]])
@@ -104,8 +95,6 @@ c21 = larBezier(S2)([[10,0,0],[10,5,3],[10,10,0]])
 dom = larDomain([10])
 dom2D = larModelProduct([dom, dom])
 out = larMap(larCoonsPatch([c10,c11,c20,c21]))(dom2D)
-
-
 
 """Struct balcone"""
 balcone = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]
@@ -120,7 +109,6 @@ balcone2 = (STRUCT(MKPOLS(balcone2)))
 
 toRemove = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]
 master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
-#VIEW(balcone)
 
 """Assembling"""
 column = CUBOID([1,3,4])
@@ -129,7 +117,6 @@ master = COLOR(pink9)(STRUCT(MKPOLS(master)))
 master = STRUCT([balcone, master, balcone2, hall_door, hall_window, hall_doorw,kitch_door,kitch_doorw,
 				s_door, n_door, w_door, sw_door, e_door, room_win, room_winr, room_win2])
 
-top = STRUCT(MKPOLS(top))
 corridor = COLOR(pink9)(STRUCT(MKPOLS(corridor)))
 corridor = STRUCT([corridor, T([1,2,3])([4.5,2,-4])(stair_floor)])
 Corridor_base = (STRUCT(MKPOLS(Corridor_base)))
@@ -138,16 +125,16 @@ hill = R([1,2])(79.999)(COLOR(GREEN)(STRUCT(MKPOLS(out))))
 
 floor = STRUCT([T(2)(-10.6)(master), T([1,2])([2,-16.2])(corridor), T([1,2])([2,-16.2])(cor_w), (T([1,2])([18.3,-16.2])(master_rotate)), 
 				])
-roof = T([3])([21])(CUBOID([17, 40, 3]))
+roof = T([3])([21])(CUBOID([17, 40, 3])) #top of the dwelling
 dwelling = STRUCT([T([1,2,3])([2,-16,-4])(Corridor_base), column_couple, T(2)(-30)(column_couple),
-				floor, T(3)(3)(floor), T(3)(6)(floor), T(3)(9)(floor), T(3)(12)(floor), #T(3)(15)(roof), T([1,2])([8,-5])(stairs)
+				floor, T(3)(3)(floor), T(3)(6)(floor), T(3)(9)(floor), T(3)(12)(floor),
 				T(3)(15)(floor),T(3)(18)(floor), T([1,2,3])([1.2,-33.5,0])(roof)])
 
-VIEW(dwelling)
+#VIEW(dwelling)
 
 ground = STRUCT([T(2)(-10)(hill), T(2)(17)(hill)])
 
 
-model = STRUCT([T([1,2,3])([5,-3.5,4.5])(dwelling), ground])
+model = STRUCT([T([1,2,3])([5,-3.5,7])(dwelling), ground])
 
-#VIEW(model)
+VIEW(model)
