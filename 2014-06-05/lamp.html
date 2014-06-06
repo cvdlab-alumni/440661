@@ -190,15 +190,15 @@
 
 
         //Bulb base
-        var bulbBaseGeometry = new THREE.TorusGeometry( 0.2, 0.01); 
-        var bulbBaseMaterial = new THREE.MeshLambertMaterial( {color: 0xffffff} );
+        var bulbBaseGeometry = new THREE.TorusGeometry( 0.4, 0.1); 
+        var bulbBaseMaterial = new THREE.MeshLambertMaterial( {color: 0x000000} );
         var bulbBase = new THREE.Mesh(bulbBaseGeometry, bulbBaseMaterial);
         bulbBase.position.set(shade.position.x, shade.position.y, shade.position.z);
         scene.add(bulbBase);
 
         //Bulb
         var bulbGeometry = new THREE.SphereGeometry( 1, 20, 20 );
-        var bulbMaterial = new THREE.MeshBasicMaterial( {transparent : true, opacity : 0.9} );
+        var bulbMaterial = new THREE.MeshBasicMaterial( {transparent : true, opacity : 0.6} );
         var bulb = new THREE.Mesh(bulbGeometry, bulbMaterial);
         bulb.castShadow = true;
 
@@ -272,8 +272,8 @@
               renderer.shadowMapAutoUpdate = true;
               bulb.add(spotLight);
             }
-            cube.needsUpdate = true;
-            plane.needsUpdate = true;
+            //cube.needsUpdate = true;
+            //plane.needsUpdate = true;
             i++;
           }
         };
