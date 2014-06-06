@@ -262,10 +262,18 @@
           this.epsilon = 0.0; 
           var i = 0;
           this.switchLight = function () {
-            if(i%2==0)
+            if(i%2==0) {
+              //bulb.remove(spotLight);
+              renderer.shadowMapAutoUpdate = false;
               bulb.remove(spotLight);
-            else
+              renderer.clearTarget( spotLight.shadowMap );
+            }
+            else {
+              renderer.shadowMapAutoUpdate = true;
               bulb.add(spotLight);
+            }
+            cube.needsUpdate = true;
+            plane.needsUpdate = true;
             i++;
           }
         };
