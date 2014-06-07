@@ -22,6 +22,7 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/stats.js/r11/Stats.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
     <script type="text/javascript" src="assets/fonts/helvetiker_regular.typeface.js"></script> 
+    <script src="assets/libs/tween.min.js"></script>
     <script src="assets/libs/TrackballControls.js"></script>
     <script type="text/javascript" src="assets/fonts/optimer_regular.typeface.js"></script> 
     <script type="text/javascript" src="assets/fonts/days_regular.typeface.js"></script> 
@@ -32,7 +33,7 @@
         
         //Creating the scene
         var scene = new THREE.Scene();
-        var planeGeometry = new THREE.PlaneGeometry( 60, 60, 40, 40 );
+        var planeGeometry = new THREE.PlaneGeometry( 100, 100, 40, 40 );
         var planeMaterial = new THREE.MeshPhongMaterial( {color : 0x7f7fff, side: THREE.DoubleSide} );
         var plane = new THREE.Mesh(planeGeometry, planeMaterial);
         plane.receiveShadow = true;
@@ -40,7 +41,7 @@
 
         //Creating the camera
         var camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 80, 30);
+        camera.position.set(0, 100, 30);
         camera.up = new THREE.Vector3(0,0,1);
         camera.lookAt(scene.position);
 
@@ -173,7 +174,7 @@
         var height = 6;
         var radius = 1;
         var joint1 = mkJoint(radius, height);
-        scene.add(joint1);
+        //scene.add(joint1);
 
         var joint2 = mkJointEnd(radius, height);
         joint1.hook.add(joint2);
@@ -186,7 +187,7 @@
         lampBase.castShadow = true;
         lampBase.rotation.x =  1 * Math.PI/2;
         lampBase.add(joint1.sphere);
-        scene.add(lampBase);
+        //scene.add(lampBase);
 
 
         //Lamp Shade
@@ -202,7 +203,7 @@
         var bulbFilamentMaterial = new THREE.MeshLambertMaterial( {color: 0xff0000} ); 
         var bulbFilament = new THREE.Mesh(bulbFilamentGeometry, bulbFilamentMaterial);
         bulbFilament.position.set(shade.position.x, shade.position.y, shade.position.z);
-        scene.add(bulbFilament);
+        //scene.add(bulbFilament);
 
         //Bulb
         var bulbGeometry = new THREE.SphereGeometry( 1, 20, 20 );
@@ -262,25 +263,113 @@
         //Text
         var options = {
           font: "optimer",
-          size: 10,
+          size: 20,
           height: 2,
           bevelThikness : 2,
         };
 
         var material = new THREE.MeshPhongMaterial({color: 0xdddddd});
-        var textGeom = new THREE.TextGeometry( 'P I X A R', options);
+        var textGeom = new THREE.TextGeometry( 'P  X A R', options);
         var text1 = new THREE.Mesh( textGeom, material );
         text1.castShadow = true;
         scene.add( text1 );
 
+        var material2 = new THREE.MeshPhongMaterial({color: 0xdddddd});
+        var textGeom2 = new THREE.TextGeometry( 'I', options);
+        var text2 = new THREE.Mesh( textGeom2, material2 );
+        text2.castShadow = true;
+        text2.position.y = 10;
+        text2.position.x = 30.5;
+        scene.add( text2 );
+
         text1.position.z = 0;
         text1.position.y = 10;
-        text1.position.x = 25;
+        text1.position.x = 50;
         text1.rotation.x = Math.PI/2;
         text1.rotation.y = 2*Math.PI/2;
 
-        """Animation"""
+        text2.rotation.x = Math.PI/2;
+        text2.rotation.y = 2*Math.PI/2;
+
+        //Lamp
+        var lamp = new THREE.Object3D();
+        lamp.add(lampBase);
+        joint1.sphere.rotation.y = Math.PI;
+        joint2.endCylinder.rotation.x = Math.PI/2;
+        joint2.sphere.rotation.x = 0.5*Math.PI/2; 
+        lamp.add(joint1);
+        //lamp.add(joint2);
+        lamp.position.set(25,0,0);
+
+        scene.add(lamp);
+
+
         
+        //Animation
+
+        //Lamp substitutes I
+        var lampTween9 = new TWEEN.Tween(lamp.position)
+          //.to({z:20, y: 10})
+          .to({z:0}, 10)
+          .easing(TWEEN.Easing.Bounce.Out )
+
+        //I splattered
+        var lampTween8 = new TWEEN.Tween(text2.position)
+          //.to({z:20, y: 10})
+          .to({z:-20}, 10)
+          .easing(TWEEN.Easing.Bounce.Out )
+          .chain(lampTween9)
+
+        //Lamp bounce down
+        var lampTween7 = new TWEEN.Tween(lamp.position)
+          //.to({z:20, y: 10})
+          .to({z:18}, 10)
+          .easing(TWEEN.Easing.Bounce.Out )
+          .chain(lampTween8)
+          
+        //I position up
+        var lampTween6 = new TWEEN.Tween(text2.position)
+          //.to({z:20, y: 10})
+          .to({z:0}, 100)
+          .easing(TWEEN.Easing.Bounce.Out )
+          .chain(lampTween7)
+
+        //Lamp bounce up
+        var lampTween5 = new TWEEN.Tween(lamp.position)
+          //.to({z:20, y: 10})
+          .to({z:20}, 200)
+          .easing(TWEEN.Easing.Bounce.Out )
+          .chain(lampTween6)
+
+        //Continue to jump on I
+        var lampTween4 = new TWEEN.Tween(lamp.position)
+          //.to({z:20, y: 10})
+          .to({z:14, y:10}, 100)
+          .easing(TWEEN.Easing.Bounce.Out )
+          .chain(lampTween5)
+
+        //I position down
+        var lampTween3 = new TWEEN.Tween(text2.position)
+          //.to({z:20, y: 10})
+          .to({z:-4}, 10)
+          .easing(TWEEN.Easing.Cubic.InOut )
+          .chain(lampTween4)
+
+        //Jump on I
+        var lampTween2 = new TWEEN.Tween(lamp.position)
+          //.to({z:20, y: 10})
+          .to({z:18, y: 10, x: 27.5}, 150)
+          .easing(TWEEN.Easing.Elastic.InOut )
+          .chain(lampTween3)
+          //.start();
+
+        //Prepare to jump
+        var lampTween1 = new TWEEN.Tween(lamp.position)
+          //.to({z:20, y: 10})
+          .to({y:1}, 2000)
+          .easing(TWEEN.Easing.Elastic.In )
+          .chain(lampTween2)
+          .start();
 
 
         //scene.add(text1);*/
@@ -355,11 +444,11 @@
         function render() {
           stats.update();
           spotLightHelper.update();
-          //trackballControls.update();
+          trackballControls.update();
     
           // render using requestAnimationFrame
           //trackballControls.update();
-
+          TWEEN.update();
           requestAnimationFrame(render);
           renderer.render(scene, camera);
           //spotLightHelper.update();
