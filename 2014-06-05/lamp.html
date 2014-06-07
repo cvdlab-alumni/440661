@@ -21,7 +21,10 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/stats.js/r11/Stats.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+    <script type="text/javascript" src="assets/fonts/helvetiker_regular.typeface.js"></script> 
     <script src="assets/libs/TrackballControls.js"></script>
+    <script type="text/javascript" src="assets/fonts/optimer_regular.typeface.js"></script> 
+    <script type="text/javascript" src="assets/fonts/days_regular.typeface.js"></script> 
     <script>
       // once everything is loaded, we run our Three.js stuff.
       $(function () {
@@ -29,7 +32,7 @@
         
         //Creating the scene
         var scene = new THREE.Scene();
-        var planeGeometry = new THREE.PlaneGeometry( 40, 40, 40, 40 );
+        var planeGeometry = new THREE.PlaneGeometry( 60, 60, 40, 40 );
         var planeMaterial = new THREE.MeshPhongMaterial( {color : 0x7f7fff, side: THREE.DoubleSide} );
         var plane = new THREE.Mesh(planeGeometry, planeMaterial);
         plane.receiveShadow = true;
@@ -41,10 +44,7 @@
         camera.up = new THREE.Vector3(0,0,1);
         camera.lookAt(scene.position);
 
-
-
-
-        //var trackballControls = new THREE.TrackballControls(camera);
+        var trackballControls = new THREE.TrackballControls(camera);
 
         //Creating the plane
 
@@ -84,7 +84,7 @@
         function mkJoint (radius, height) {
           var joint = new THREE.Object3D();
           
-          var sphereGeometry = new THREE.SphereGeometry(radius+1.5, 20, 20);
+          var sphereGeometry = new THREE.SphereGeometry(radius, 20, 20);
           var sphereMaterial = new THREE.MeshLambertMaterial({color: 0xdadada});
           var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
           sphere.castShadow = true;
@@ -178,23 +178,31 @@
         var joint2 = mkJointEnd(radius, height);
         joint1.hook.add(joint2);
 
+        //Lamp base
+        var lampBaseGeometry = new THREE.CylinderGeometry( 3.5, 3.5, 0.7, 20, 20, false );
+        var lampBaseMaterial = new THREE.MeshLambertMaterial( {color:0x939393 } );
+        var lampBase = new THREE.Mesh(lampBaseGeometry, lampBaseMaterial);
+        lampBase.position.set(0,0,0.5);
+        lampBase.castShadow = true;
+        lampBase.rotation.x =  1 * Math.PI/2;
+        lampBase.add(joint1.sphere);
+        scene.add(lampBase);
+
+
         //Lamp Shade
         var shadeGeometry = new THREE.SphereGeometry( 3, 20, 20, 0, Math.PI * 2, 0, Math.PI / 2 );
-        var shadeMaterial = new THREE.MeshLambertMaterial( {color : 0xd3d3d3, side : THREE.DoubleSide} );
+        var shadeMaterial = new THREE.MeshLambertMaterial( {color : 0xdadada, side : THREE.DoubleSide} );
         var shade = new THREE.Mesh(shadeGeometry, shadeMaterial);
         shade.castShadow = true;
         shade.rotation.x = - 1 * Math.PI;
         joint2.hook.add(shade);
 
-
-
-
-        //Bulb base
-        var bulbBaseGeometry = new THREE.TorusGeometry( 0.4, 0.1); 
-        var bulbBaseMaterial = new THREE.MeshLambertMaterial( {color: 0x000000} );
-        var bulbBase = new THREE.Mesh(bulbBaseGeometry, bulbBaseMaterial);
-        bulbBase.position.set(shade.position.x, shade.position.y, shade.position.z);
-        scene.add(bulbBase);
+        //Bulb filament
+        var bulbFilamentGeometry = new THREE.TorusGeometry( 0.4, 0.1); 
+        var bulbFilamentMaterial = new THREE.MeshLambertMaterial( {color: 0xff0000} ); 
+        var bulbFilament = new THREE.Mesh(bulbFilamentGeometry, bulbFilamentMaterial);
+        bulbFilament.position.set(shade.position.x, shade.position.y, shade.position.z);
+        scene.add(bulbFilament);
 
         //Bulb
         var bulbGeometry = new THREE.SphereGeometry( 1, 20, 20 );
@@ -203,8 +211,8 @@
         bulb.castShadow = true;
 
         //shade.add(bulb);
-        shade.add(bulbBase);
-        bulbBase.add(bulb);
+        shade.add(bulbFilament);
+        bulbFilament.add(bulb);
 
 
         //SpotLight
@@ -227,12 +235,15 @@
         spotLight.shadowCameraNear = 1; 
         spotLight.shadowCameraFar = 4000; 
         spotLight.shadowCameraFov = 30;
-        spotLight.name = "spotLight";
+        //spotLight.name = "spotLight";
 /*        spotLight.distance = 25;
         spotLight.angle = 0.75;
         spotLight.exponent = 30;*/
 
-        
+        //Bulb PointLight
+        var bulbPointLightColor = "#ffff7f"
+        var bulbPointLight = new THREE.PointLight(bulbPointLightColor, 0.8, 10);
+        bulb.add(bulbPointLight);
 
 
         var cubeGeometry = new THREE.CubeGeometry( 2, 2, 2 );
@@ -240,7 +251,7 @@
         var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
         cube.castShadow = true;
         cube.position.set(10,10,4);
-        scene.add(cube);
+        //scene.add(cube);
 
         var target = new THREE.Object3D();
         target.position = new THREE.Vector3( bulb.position.x, bulb.position.y, 30);
@@ -248,8 +259,31 @@
         var spotLightHelper = new THREE.SpotLightHelper(spotLight, 3);
         //scene.add(spotLightHelper);
 
+        //Text
+        var options = {
+          font: "optimer",
+          size: 10,
+          height: 2,
+          bevelThikness : 2,
+        };
+
+        var material = new THREE.MeshPhongMaterial({color: 0xdddddd});
+        var textGeom = new THREE.TextGeometry( 'P I X A R', options);
+        var text1 = new THREE.Mesh( textGeom, material );
+        text1.castShadow = true;
+        scene.add( text1 );
+
+        text1.position.z = 0;
+        text1.position.y = 10;
+        text1.position.x = 25;
+        text1.rotation.x = Math.PI/2;
+        text1.rotation.y = 2*Math.PI/2;
+
+        """Animation"""
+        
 
 
+        //scene.add(text1);*/
 
         // add the output of the renderer to the html element
         $('body').append(renderer.domElement);
@@ -263,14 +297,17 @@
           var i = 0;
           this.switchLight = function () {
             if(i%2==0) {
-              //bulb.remove(spotLight);
               renderer.shadowMapAutoUpdate = false;
               bulb.remove(spotLight);
+              bulb.remove(bulbPointLight);
               renderer.clearTarget( spotLight.shadowMap );
+              bulbFilament.material.color.setHex( 0x000000 );
             }
             else {
               renderer.shadowMapAutoUpdate = true;
               bulb.add(spotLight);
+              bulb.add(bulbPointLight);
+              bulbFilament.material.color.setHex( 0xff0000 );
             }
             //cube.needsUpdate = true;
             //plane.needsUpdate = true;
