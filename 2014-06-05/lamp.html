@@ -353,14 +353,16 @@
         //Continue to jump on I
         var lampTween4 = new TWEEN.Tween(lamp.position)
           //.to({z:20, y: 10})
-          .to({z:14, y:10}, 100)
+          .to({z:14, y:10}, 10)
+          //.to({z:14, y:10}, 100)
           .easing(TWEEN.Easing.Bounce.Out )
           .chain(lampTween5)
 
         //I position down
         var lampTween3 = new TWEEN.Tween(text2.position)
           //.to({z:20, y: 10})
-          .to({z:-4}, 10)
+          .to({z:-4}, 5)
+          //.to({z:-4}, 10)
           //.easing(TWEEN.Easing.Cubic.InOut )
           .easing(TWEEN.Easing.Bounce.InOut )
           .chain(lampTween4)
@@ -368,7 +370,8 @@
         //Jump on I
         var lampTween2 = new TWEEN.Tween(lamp.position)
           //.to({z:20, y: 10})
-          .to({z:18, y: 10, x: 27.5}, 150)
+          .to({z:18, y: 10, x: 27.5}, 500)
+          //.to({z:18, y: 10, x: 27.5}, 150)
           .easing(TWEEN.Easing.Elastic.InOut )
           .chain(lampTween3)
           //.start();
