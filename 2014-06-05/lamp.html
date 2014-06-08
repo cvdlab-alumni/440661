@@ -100,12 +100,19 @@
           joint.add(cylinder1);*/
 
 
-          var cylinderGeometry = new THREE.CylinderGeometry(radius-0.2, radius-0.2, height, 20, 20, false);
+          var cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, height, 20, 20, false);
           var cylinderMaterial = new THREE.MeshLambertMaterial({color: 0xdadada});
           var cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
           cylinder.castShadow = true;
-          cylinder.position.set(0, height / 2 + radius, 0);
+          cylinder.position.set(0, height / 2 + radius, 0.25);
           sphere.add(cylinder);
+
+          var cylinderGeometry3 = new THREE.CylinderGeometry(0.2, 0.2, height, 20, 20, false);
+          var cylinderMaterial3 = new THREE.MeshLambertMaterial({color: 0xdadada});
+          var cylinder3 = new THREE.Mesh(cylinderGeometry3, cylinderMaterial3);
+          cylinder3.castShadow = true;
+          cylinder3.position.set(0, height / 2 + radius, -0.25);
+          sphere.add(cylinder3);
           //cylinder1.add(cylinder);
 
           var hook = new THREE.Object3D();
@@ -132,12 +139,19 @@
           sphere.position.set(0, 0, 0);
           joint.add(sphere);
 
-          var cylinderGeometry = new THREE.CylinderGeometry(radius-0.2, radius-0.2, height, 20, 20, false);
+          var cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, height, 20, 20, false);
           var cylinderMaterial = new THREE.MeshLambertMaterial({color: 0xdadada});
           var cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
           cylinder.castShadow = true;
-          cylinder.position.set(0, height / 2 + radius, 0);
+          cylinder.position.set(0, height / 2 + radius, -0.3);
           sphere.add(cylinder);
+
+          var cylinderGeometry3 = new THREE.CylinderGeometry(0.2, 0.2, height, 20, 20, false);
+          var cylinderMaterial3 = new THREE.MeshLambertMaterial({color: 0xdadada});
+          var cylinder3 = new THREE.Mesh(cylinderGeometry3, cylinderMaterial3);
+          cylinder3.castShadow = true;
+          cylinder3.position.set(0, height / 2 + radius, 0.3);
+          sphere.add(cylinder3);
 
           /*var sphereGeometry2 = new THREE.SphereGeometry(radius, 20, 20);
           var sphereMaterial2 = new THREE.MeshLambertMaterial({color: 0xd3d3d3});
@@ -172,7 +186,7 @@
         }
 
         var height = 6;
-        var radius = 1;
+        var radius = 0.6;
         var joint1 = mkJoint(radius, height);
         //scene.add(joint1);
 
@@ -432,7 +446,7 @@
             text2.rotation.y = 2*Math.PI/2;
             //Set all to default
             joint1.sphere.rotation.z = 0;
-            joint2.rotation.z = 0;
+            joint2.rotation.y = 0;
 
 
             var lampTween1 = new TWEEN.Tween(lamp.position)
@@ -467,7 +481,7 @@
           //target.position.x = value;
         });
         gui.add(controls, 'delta', 0.0, 2*Math.PI).onChange(function (value) {
-          joint2.rotation.z = value; //FORSE DA CAMBIARE CON y?
+          joint2.rotation.y = value; //FORSE DA CAMBIARE CON y?
           //target.position.y = value;
         });
         gui.add(controls, 'epsilon', 0.0, Math.PI/2).onChange(function (value) {
