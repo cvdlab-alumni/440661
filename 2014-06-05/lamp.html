@@ -266,6 +266,7 @@
           size: 20,
           height: 2,
           bevelThikness : 2,
+          curveSegments : 24,
         };
 
         var material = new THREE.MeshPhongMaterial({color: 0xdddddd});
@@ -307,11 +308,19 @@
         
         //Animation
 
+        var lampTween10 = new TWEEN.Tween(joint2.endCylinder.rotation)
+          //.to({z:20, y: 10})
+          .to({x:Math.PI/4}, 2000)
+          .delay(1000)
+          .easing(TWEEN.Easing.Linear.None )
+
+
         //Lamp substitutes I
         var lampTween9 = new TWEEN.Tween(lamp.position)
           //.to({z:20, y: 10})
           .to({z:0}, 10)
           .easing(TWEEN.Easing.Bounce.Out )
+          .chain(lampTween10)
 
         //I splattered
         var lampTween8 = new TWEEN.Tween(text2.position)
@@ -352,7 +361,8 @@
         var lampTween3 = new TWEEN.Tween(text2.position)
           //.to({z:20, y: 10})
           .to({z:-4}, 10)
-          .easing(TWEEN.Easing.Cubic.InOut )
+          //.easing(TWEEN.Easing.Cubic.InOut )
+          .easing(TWEEN.Easing.Bounce.InOut )
           .chain(lampTween4)
 
         //Jump on I
@@ -364,12 +374,13 @@
           //.start();
 
         //Prepare to jump
-        var lampTween1 = new TWEEN.Tween(lamp.position)
+        /*var lampTween1 = new TWEEN.Tween(lamp.position)
           //.to({z:20, y: 10})
-          .to({y:1}, 2000)
+          .to({y:1}, 2500)
           .easing(TWEEN.Easing.Elastic.In )
           .chain(lampTween2)
-          .start();
+          .start();*/
+
 
 
         //scene.add(text1);*/
@@ -386,14 +397,15 @@
           var i = 0;
           this.switchLight = function () {
             if(i%2==0) {
-              renderer.shadowMapAutoUpdate = false;
+              //renderer.shadowMapAutoUpdate = false;
+              spotLight.castShadow = false;
               bulb.remove(spotLight);
               bulb.remove(bulbPointLight);
               renderer.clearTarget( spotLight.shadowMap );
               bulbFilament.material.color.setHex( 0x000000 );
             }
             else {
-              renderer.shadowMapAutoUpdate = true;
+              spotLight.castShadow = true;
               bulb.add(spotLight);
               bulb.add(bulbPointLight);
               bulbFilament.material.color.setHex( 0xff0000 );
@@ -401,6 +413,32 @@
             //cube.needsUpdate = true;
             //plane.needsUpdate = true;
             i++;
+          }
+
+          this.startAnimation = function() {
+            //Set all to animation position
+            joint1.sphere.rotation.y = Math.PI;
+            joint2.endCylinder.rotation.x = Math.PI/2;
+            joint2.sphere.rotation.x = 0.5*Math.PI/2;
+            lamp.position.set(25,0,0);
+            text2.castShadow = true;
+            text2.position.y = 10;
+            text2.position.x = 30.5;
+            text2.position.z = 0;
+            text2.rotation.x = Math.PI/2;
+            text2.rotation.y = 2*Math.PI/2;
+            //Set all to default
+            joint1.sphere.rotation.z = 0;
+            joint2.rotation.z = 0;
+
+
+            var lampTween1 = new TWEEN.Tween(lamp.position)
+              //.to({z:20, y: 10})
+              .to({y:-3}, 2500)
+              .easing(TWEEN.Easing.Elastic.In )
+              .chain(lampTween2)
+              .start();
+            render();
           }
         };
 
@@ -440,11 +478,12 @@
         });*/
         gui.add(controls, 'switchLight');
 
+        gui.add(controls, 'startAnimation');
 
         function render() {
           stats.update();
           spotLightHelper.update();
-          trackballControls.update();
+          //trackballControls.update();
     
           // render using requestAnimationFrame
           //trackballControls.update();
