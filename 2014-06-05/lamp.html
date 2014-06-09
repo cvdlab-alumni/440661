@@ -100,14 +100,14 @@
           joint.add(cylinder1);*/
 
 
-          var cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, height, 40, 40, false);
+          var cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, height+0.6, 40, 40, false);
           var cylinderMaterial = new THREE.MeshPhongMaterial({color: 0xdadada});
           var cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
           cylinder.castShadow = true;
           cylinder.position.set(0, height / 2 + radius, 0.25);
           sphere.add(cylinder);
 
-          var cylinderGeometry3 = new THREE.CylinderGeometry(0.2, 0.2, height, 40, 40, false);
+          var cylinderGeometry3 = new THREE.CylinderGeometry(0.2, 0.2, height+0.6, 40, 40, false);
           var cylinderMaterial3 = new THREE.MeshPhongMaterial({color: 0xdadada});
           var cylinder3 = new THREE.Mesh(cylinderGeometry3, cylinderMaterial3);
           cylinder3.castShadow = true;
