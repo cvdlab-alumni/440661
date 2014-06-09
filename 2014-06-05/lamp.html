@@ -85,8 +85,8 @@
         function mkJoint (radius, height) {
           var joint = new THREE.Object3D();
           
-          var sphereGeometry = new THREE.SphereGeometry(radius, 20, 20);
-          var sphereMaterial = new THREE.MeshLambertMaterial({color: 0xdadada});
+          var sphereGeometry = new THREE.SphereGeometry(radius, 80, 80);
+          var sphereMaterial = new THREE.MeshPhongMaterial({color: 0xdadada});
           var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
           sphere.castShadow = true;
           sphere.position.set(0, 0, 0);
@@ -100,15 +100,15 @@
           joint.add(cylinder1);*/
 
 
-          var cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, height, 20, 20, false);
-          var cylinderMaterial = new THREE.MeshLambertMaterial({color: 0xdadada});
+          var cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, height, 40, 40, false);
+          var cylinderMaterial = new THREE.MeshPhongMaterial({color: 0xdadada});
           var cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
           cylinder.castShadow = true;
           cylinder.position.set(0, height / 2 + radius, 0.25);
           sphere.add(cylinder);
 
-          var cylinderGeometry3 = new THREE.CylinderGeometry(0.2, 0.2, height, 20, 20, false);
-          var cylinderMaterial3 = new THREE.MeshLambertMaterial({color: 0xdadada});
+          var cylinderGeometry3 = new THREE.CylinderGeometry(0.2, 0.2, height, 40, 40, false);
+          var cylinderMaterial3 = new THREE.MeshPhongMaterial({color: 0xdadada});
           var cylinder3 = new THREE.Mesh(cylinderGeometry3, cylinderMaterial3);
           cylinder3.castShadow = true;
           cylinder3.position.set(0, height / 2 + radius, -0.25);
@@ -132,22 +132,22 @@
 
         function mkJointEnd (radius, height) {
           var joint = new THREE.Object3D();
-          var sphereGeometry = new THREE.SphereGeometry(radius, 20, 20);
-          var sphereMaterial = new THREE.MeshLambertMaterial({color: 0xdadada});
+          var sphereGeometry = new THREE.SphereGeometry(radius, 80, 80);
+          var sphereMaterial = new THREE.MeshPhongMaterial({color: 0xdadada});
           var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
           sphere.castShadow = true;
           sphere.position.set(0, 0, 0);
           joint.add(sphere);
 
-          var cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, height, 20, 20, false);
-          var cylinderMaterial = new THREE.MeshLambertMaterial({color: 0xdadada});
+          var cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, height, 40, 40, false);
+          var cylinderMaterial = new THREE.MeshPhongMaterial({color: 0xdadada});
           var cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
           cylinder.castShadow = true;
           cylinder.position.set(0, height / 2 + radius, -0.3);
           sphere.add(cylinder);
 
-          var cylinderGeometry3 = new THREE.CylinderGeometry(0.2, 0.2, height, 20, 20, false);
-          var cylinderMaterial3 = new THREE.MeshLambertMaterial({color: 0xdadada});
+          var cylinderGeometry3 = new THREE.CylinderGeometry(0.2, 0.2, height, 40, 40, false);
+          var cylinderMaterial3 = new THREE.MeshPhongMaterial({color: 0xdadada});
           var cylinder3 = new THREE.Mesh(cylinderGeometry3, cylinderMaterial3);
           cylinder3.castShadow = true;
           cylinder3.position.set(0, height / 2 + radius, 0.3);
@@ -160,7 +160,7 @@
           sphere2.position.set(0, cylinder.position.z + height/2 + radius, 0);
           cylinder.add(sphere2);*/
 
-          var cylinderGeometry2 = new THREE.CylinderGeometry(radius-0.2, radius-0.2, height/2, 20, 20, false);
+          var cylinderGeometry2 = new THREE.CylinderGeometry(radius-0.2, radius-0.2, height/2, 40, 40, false);
           var cylinderMaterial2 = new THREE.MeshLambertMaterial({color: 0xdadada});
           var cylinder2 = new THREE.Mesh(cylinderGeometry2, cylinderMaterial2);
           cylinder2.castShadow = true;
@@ -194,8 +194,8 @@
         joint1.hook.add(joint2);
 
         //Lamp base
-        var lampBaseGeometry = new THREE.CylinderGeometry( 3.5, 3.5, 0.7, 20, 20, false );
-        var lampBaseMaterial = new THREE.MeshLambertMaterial( {color:0x939393 } );
+        var lampBaseGeometry = new THREE.CylinderGeometry( 3.5, 3.5, 0.7, 40, 40, false );
+        var lampBaseMaterial = new THREE.MeshPhongMaterial( {color:0x939393 } );
         var lampBase = new THREE.Mesh(lampBaseGeometry, lampBaseMaterial);
         lampBase.position.set(0,0,0.5);
         lampBase.castShadow = true;
@@ -205,8 +205,8 @@
 
 
         //Lamp Shade
-        var shadeGeometry = new THREE.SphereGeometry( 3, 20, 20, 0, Math.PI * 2, 0, Math.PI / 2 );
-        var shadeMaterial = new THREE.MeshLambertMaterial( {color : 0xdadada, side : THREE.DoubleSide} );
+        var shadeGeometry = new THREE.SphereGeometry( 3, 80, 80, 0, Math.PI * 2, 0, Math.PI / 2 );
+        var shadeMaterial = new THREE.MeshPhongMaterial( {color : 0xdadada, side : THREE.DoubleSide} );
         var shade = new THREE.Mesh(shadeGeometry, shadeMaterial);
         shade.castShadow = true;
         shade.rotation.x = - 1 * Math.PI;
@@ -214,7 +214,7 @@
 
         //Bulb filament
         var bulbFilamentGeometry = new THREE.TorusGeometry( 0.4, 0.1); 
-        var bulbFilamentMaterial = new THREE.MeshLambertMaterial( {color: 0xff0000} ); 
+        var bulbFilamentMaterial = new THREE.MeshPhongMaterial( {color: 0xff0000} ); 
         var bulbFilament = new THREE.Mesh(bulbFilamentGeometry, bulbFilamentMaterial);
         bulbFilament.position.set(shade.position.x, shade.position.y, shade.position.z);
         //scene.add(bulbFilament);
@@ -259,14 +259,6 @@
         var bulbPointLightColor = "#ffff7f"
         var bulbPointLight = new THREE.PointLight(bulbPointLightColor, 0.8, 10);
         bulb.add(bulbPointLight);
-
-
-        var cubeGeometry = new THREE.CubeGeometry( 2, 2, 2 );
-        var cubeMaterial = new THREE.MeshLambertMaterial( {color: 0xffffff} );
-        var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-        cube.castShadow = true;
-        cube.position.set(10,10,4);
-        //scene.add(cube);
 
         var target = new THREE.Object3D();
         target.position = new THREE.Vector3( bulb.position.x, bulb.position.y, 30);
