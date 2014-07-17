@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html>
+ <head> 
+  <title>Playground</title> 
+  <style>
+    body{
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #stats {  /* Align stats top-left */
+      position: absolute;
+      left: 0px;
+      top: 0px;
+    }
+  </style> 
+  </head>
+  <body>
+  <!-- JavaScript libraries -->
+  <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/stats.js/r11/Stats.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script> -->
+  <script src="assets/libs/jquery.min.js"></script>
+  <script src="assets/libs/three.min.js"></script>
+  <script src="assets/libs/Stats.min.js"></script>
+  <script src="assets/libs/dat.gui.min.js"></script>
+  <script src="assets/libs/TrackballControls.js"></script>
+  <script src="assets/libs/OBJLoader.js"></script>
+  <script type="text/javascript" src="assets/libs/MTLLoader.js"></script> 
+  <script type="text/javascript" src="assets/libs/OBJMTLLoader.js"></script> 
+
+  <script src="assets/libs/ParticleEngine.js"></script>
+  <script src="assets/libs/ParticleEngineExamples.js"></script>
+
+  <script src='assets/libs/threex.skymap.js'></script>
+  <script src='assets/libs/threex.texturecube.js'></script>
+  <script type="text/javascript" src='assets/libs/apartment.js'></script>
+
+  <!-- Javascript code that runs our Three.js examples --> 
+  <script>
+
+  var scene;
+  var clock = new THREE.Clock();
+
+
+    // once everything is loaded, we run our Three.js stuff.
+    $(function () {
+
+      var stats = initStats();
+
+      // create a scene, that will hold all our elements such as objects, cameras and lights.
+      scene = new THREE.Scene();
+
+      // create a camera, which defines where we're looking at.
+      var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000000);
+
+      // create trackball controls
+      var trackballControls = new THREE.TrackballControls(camera);
+
+      // create a render and set the size
+      var webGLRenderer = new THREE.WebGLRenderer();
+      webGLRenderer.setClearColor(new THREE.Color(0xeeeeee, 1.0));
+      webGLRenderer.setSize(window.innerWidth, window.innerHeight);
+
+      // position and point the camera to the center of the scene
+      camera.position.set(-30,40,50);
+      camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+      var directLight = new THREE.DirectionalLight( 0xff5808, 0.5 );
+      directLight.position.set(0, 1000, 0);
+      scene.add(directLight);
+
+      var pointLight2 = new THREE.PointLight( 0xffffff, 0.5, 10000 );
+      pointLight2.position.set(0, 1000, 0);
+      //scene.add(pointLight2);
+
+      var light = new THREE.DirectionalLight( 0xffffff, 1.5 );
+      light.position.set( 1, 1, 1 );
+      scene.add( light );
+
+      var light = new THREE.DirectionalLight( 0xffffff, 0.75 );
+      light.position.set( -1, - 0.5, -1 );
+      scene.add( light );
+
+      //SkyBox
+      THREEx.TextureCube.initWellKnownUrls('assets/');
+      var mesh    = THREEx.createSkymap('mars');
+      mesh.scale.set(10,10,10);
+      scene.add( mesh );
+      
+
+
+      // add the output of the renderer to the html element
+      $('body').append(webGLRenderer.domElement);
+
+      // call the render function
+      var step = 0;
+
+      // setup the control gui
+      //var controls = new function () {};
+
+      //var gui = new dat.GUI();
+      var mesh;
+
+      var apartment = apartmentInit(true);
+
+      addDoors(scene, []);
+      addSwitch(scene, []);
+      scene.add(apartment);
+
+      //Particle Engine by Lee Stemkoski - THANKS!!
+      parameters = 
+        {
+          clouds:     function() { restartEngine( Examples.clouds     ); },   
+ 
+        };
+      var engine1 = new ParticleEngine();
+      engine1.setValues( Examples.clouds1 );
+      engine1.initialize();
+
+      var engine2 = new ParticleEngine();
+      engine2.setValues( Examples.clouds2 );
+      engine2.initialize();
+
+      function restartEngine(parameters, engine)
+      {
+        resetCamera();
+
+        engine.destroy();
+        engine = new ParticleEngine();
+        engine.setValues( parameters );
+        engine.initialize();
+      }
+
+      var options = new function(){
+
+              this.snow = false;
+              this.lights = false;
+            };
+
+      render();
+
+
+      //Controls-add snow
+      var gui = new dat.GUI();
+      
+
+      var engine;
+      var controls = new function () {
+        gui.add(options,"snow").onChange(function(e) {
+            this.snow = e;
+            if(this.snow) {
+                engine = new ParticleEngine();
+                engine.setValues( Examples.snow );
+                var particles = engine.initialize();
+                scene.add(particles);
+                engine1.destroy();
+                engine2.destroy();
+            }
+            else {
+              engine.destroy();
+              engine1.initialize();
+              engine2.initialize();
+            }
+        });
+
+      };
+
+      gui.add(controls, 'snow');
+
+      function render() {
+        stats.update();
+        trackballControls.update();
+        requestAnimationFrame(render);
+        webGLRenderer.render(scene, camera);
+        var dt = clock.getDelta();
+        engine1.update( dt * 0.5 );  
+        engine2.update( dt * 0.5 );  
+
+        if(options.snow)
+                {
+                  var dt = clock.getDelta();
+                  engine.update( dt * 0.5 );
+                }  
+
+      }
+
+      function initStats() {
+        var stats = new Stats();
+        stats.setMode(0); // 0: fps, 1: ms
+        $('body').append(stats.domElement);
+        return stats;
+      }
+    });
+  </script>  
+ </body>
+</html>

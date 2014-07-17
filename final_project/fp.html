@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Final Project - Andrea D'Agostino</title> 
+    <style>
+      html, body {
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        background-color: #ffffff;
+        margin: 0;
+        overflow: hidden;
+        font-family: arial;
+      }
+
+      #blocker {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+      }
+
+      #instructions {
+        width: 100%;
+        height: 100%;
+
+        display: -webkit-box;
+        display: -moz-box;
+        display: box;
+
+        -webkit-box-orient: horizontal;
+        -moz-box-orient: horizontal;
+        box-orient: horizontal;
+
+        -webkit-box-pack: center;
+        -moz-box-pack: center;
+        box-pack: center;
+
+        -webkit-box-align: center;
+        -moz-box-align: center;
+        box-align: center;
+
+        color: #ffffff;
+        text-align: center;
+        cursor: pointer;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="blocker">
+
+      <div id="instructions">
+        <span style="font-size:40px">Click to explore the house</span>
+        <br />
+        (W, A, S, D = Move, SPACE = Very Little Jump, MOUSE = Look around)
+      </div>
+
+    </div>
+
+    <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/stats.js/r11/Stats.min.js"></script> -->
+    <script src="assets/libs/jquery.min.js"></script>
+    <script src="assets/libs/three.min.js"></script>
+    <script src="assets/libs/Stats.min.js"></script>
+    <script src="assets/libs/dat.gui.min.js"></script>
+    <script src="assets/libs/PointerLockControls.js"></script>
+
+    <script src="assets/libs/TrackballControls.js"></script>
+    <script src="assets/libs/tween.min.js"></script>
+    
+    <script type="text/javascript" src="assets/libs/OBJLoader.js"></script> 
+    <script type="text/javascript" src="assets/libs/MTLLoader.js"></script> 
+    <script type="text/javascript" src="assets/libs/OBJMTLLoader.js"></script> 
+
+    <script src='assets/libs/threex.skymap.js'></script>
+    <script src='assets/libs/threex.texturecube.js'></script>
+
+    <script type="text/javascript" src='assets/libs/apartment.js'></script>
+    <script type="text/javascript" src='assets/libs/map.js'></script>
+    <script type="text/javascript" src='assets/libs/intersectionHandler.js'></script>
+
+    <script>
+
+      var camera, scene, renderer;
+      var geometry, material, mesh;
+      var controls;
+
+      //var apartDoor = apartmentInit();
+      //console.log(apartDoor);
+
+      var apartment = apartmentInit(false);
+
+      var objects = [];
+
+      var ray;
+
+      var ghost;
+
+      var renderer;
+
+      var collidableMeshList = [];
+
+      var blocker = document.getElementById( 'blocker' );
+      var instructions = document.getElementById( 'instructions' );
+
+      var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
+
+      if ( havePointerLock ) {
+        var element = document.body;
+        var pointerlockchange = function ( event ) {
+
+          if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
+            controls.enabled = true;
+            blocker.style.display = 'none';
+          } else {
+            controls.enabled = false;
+            blocker.style.display = '-webkit-box';
+            blocker.style.display = '-moz-box';
+            blocker.style.display = 'box';
+            instructions.style.display = '';
+          }
+        }
+
+        var pointerlockerror = function ( event ) {
+          instructions.style.display = '';
+        }
+
+        // Hook pointer lock state change events
+        document.addEventListener( 'pointerlockchange', pointerlockchange, false );
+        document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
+        document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
+
+        document.addEventListener( 'pointerlockerror', pointerlockerror, false );
+        document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
+        document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
+
+        ////////////////////////////
+        document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+        ////////////////////////////
+
+        instructions.addEventListener( 'click', function ( event ) {
+          instructions.style.display = 'none';
+
+          // Ask the browser to lock the pointer
+          element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+
+          if ( /Firefox/i.test( navigator.userAgent ) ) {
+            var fullscreenchange = function ( event ) {
+
+              if ( document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element ) {
+                document.removeEventListener( 'fullscreenchange', fullscreenchange );
+                document.removeEventListener( 'mozfullscreenchange', fullscreenchange );
+                element.requestPointerLock();
+              }
+            }
+
+            document.addEventListener( 'fullscreenchange', fullscreenchange, false );
+            document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
+
+            element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
+            element.requestFullscreen();
+
+          } else {
+            element.requestPointerLock();
+          }
+        }, false );
+      } else {
+        instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
+      }
+
+      init();
+      render();
+
+      function init() {
+        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+
+        scene = new THREE.Scene();
+
+        var light = new THREE.DirectionalLight( 0xffffff, 1.5 );
+        light.position.set( 1, 1, 1 );
+        scene.add( light );
+
+        var light = new THREE.DirectionalLight( 0xffffff, 0.75 );
+        light.position.set( -1, - 0.5, -1 );
+        scene.add( light );
+
+        var pointLight = new THREE.PointLight( 0xff5808, 0.5, 10000 );
+        pointLight.position.set(0, 1000, 0);
+        scene.add(pointLight);
+
+        controls = new THREE.PointerLockControls( camera );
+        controls.getObject().position.set(80,20,-20);
+        
+        scene.add( controls.getObject() );
+        //controls.getObject().position.set(10,20,10);
+
+        ray = new THREE.Raycaster();
+        ray.ray.direction.set( 1, 0, 0 );
+
+        var trackballControls = new THREE.TrackballControls(camera);
+
+
+        //SkyBox
+        THREEx.TextureCube.initWellKnownUrls('assets/');
+        var mesh    = THREEx.createSkymap('mars');
+        mesh.scale.set(10,10,10);
+        scene.add( mesh );
+
+        //Add apartment with doors and switch
+        addDoors(scene,collidableMeshList);
+        addSwitch(scene, collidableMeshList);
+        //Apartment
+        scene.add(apartment);
+
+        //Renderer
+        renderer = new THREE.WebGLRenderer();
+        renderer.setClearColor( 0xffffff );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+
+        //
+
+        window.addEventListener( 'resize', onWindowResize, false );
+
+      }
+
+      var scaleFactor = 10;
+
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+      }
+
+      function onDocumentMouseDown (event) {
+        event.preventDefault();
+        var projector = new THREE.Projector();
+           var raycaster = new THREE.Raycaster();
+
+           var mouse = {};
+           // it is always the center of the screen
+           mouse.x = 0;
+           mouse.y = 0;
+
+           var vector = new THREE.Vector3(mouse.x, mouse.y, 1);
+           var cameraDirection = controls.getDirection(vector).clone();
+           projector.unprojectVector(cameraDirection,camera );
+
+           var ray = new THREE.Raycaster(controls.getObject().position, cameraDirection.sub(controls.getObject().position).normalize());
+           var intersectsKit = ray.intersectObjects([collidableMeshList[0]]);
+           var intersectsHall = ray.intersectObjects([collidableMeshList[1]]);
+           var intersectsBath = ray.intersectObjects([collidableMeshList[2]]);
+           var intersectsRRoom = ray.intersectObjects([collidableMeshList[3]]);
+           var intersectsLRoom = ray.intersectObjects([collidableMeshList[4]]);
+           var intersectsUppRoom = ray.intersectObjects([collidableMeshList[5]]);
+           var intersectsWinKit = ray.intersectObjects([collidableMeshList[6]]);
+           var intersectsWinHall1 = ray.intersectObjects([collidableMeshList[7]]);
+           var intersectsWinHall2 = ray.intersectObjects([collidableMeshList[8]]);
+           var intersectsWindowHall1 = ray.intersectObjects([collidableMeshList[9]]);
+           var intersectsWindowHall2 = ray.intersectObjects([collidableMeshList[10]]);
+           var intersectsWindowLR1 = ray.intersectObjects([collidableMeshList[11]]);
+           var intersectsWindowLR2 = ray.intersectObjects([collidableMeshList[12]]);
+           var intersectsWindowUR1 = ray.intersectObjects([collidableMeshList[13]]);
+           var intersectsWindowUR2 = ray.intersectObjects([collidableMeshList[14]]);
+           var intersectsWinRRoom = ray.intersectObjects([collidableMeshList[15]]);
+           var intersectsMain = ray.intersectObjects([collidableMeshList[16]]);
+           var intersectsHallSwitch = ray.intersectObjects([collidableMeshList[17]]);
+
+
+           var listInteractObj = [];
+           listInteractObj.push(intersectsKit);
+           listInteractObj.push(intersectsHall);
+           listInteractObj.push(intersectsBath);
+           listInteractObj.push(intersectsRRoom);
+           listInteractObj.push(intersectsLRoom);
+           listInteractObj.push(intersectsUppRoom);
+           listInteractObj.push(intersectsWinKit);
+           listInteractObj.push(intersectsWinHall1);
+           listInteractObj.push(intersectsWinHall2);
+           listInteractObj.push(intersectsWindowHall1);
+           listInteractObj.push(intersectsWindowHall2);
+           listInteractObj.push(intersectsWindowLR1);
+           listInteractObj.push(intersectsWindowLR2);
+           listInteractObj.push(intersectsWindowUR1);
+           listInteractObj.push(intersectsWindowUR2);
+           listInteractObj.push(intersectsWinRRoom);
+           listInteractObj.push(intersectsMain);
+           listInteractObj.push(intersectsHallSwitch);
+
+           checkIntersections(listInteractObj, scene, apartment);
+
+      }
+
+      function render() {
+        requestAnimationFrame( render );
+        var target = controls.getObject();
+        controls.update();
+        var a = canWalk(target);
+        checkCollision(a, controls, target);
+        TWEEN.update();
+        renderer.render( scene, camera );
+      }
+    </script>
+  </body>
+</html>
