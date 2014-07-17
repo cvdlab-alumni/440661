@@ -1,6 +1,6 @@
 <h1>Andrea D'Agostino</h1>
-<h2>440661</h2>
-
+<h2>ID: 440661</h2>
+<h3>"My virtual home"</h3>
 This project is my attempt to reproduce my house.
 
 Scripts:
