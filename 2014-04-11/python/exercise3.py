@@ -1,4 +1,5 @@
 import sys
+from exercise2 import *
 """ import modules from lar-cc/lib """
 sys.path.insert(0, 'C:\Users\Andrea\lar-cc\lar-cc\lib\py')
 from simplexn import *
@@ -82,7 +83,7 @@ asph_terr = STRUCT([COLOR(ASPHALT)(asph_terr)])
 """Final model"""
 model_3d = STRUCT([model_3d,green_terr,neighborhood])
 
-VIEW(model_3d)
+#VIEW(model_3d)
 
 
 

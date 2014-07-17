@@ -190,4 +190,4 @@ win = STRUCT([win_n,win_e, win_w, win_s])
 """FINAL MODEL"""
 model_3d = COLOR(CASTLE)(STRUCT([model,columns, floor1, floor1_main, roof]))
 model_3d = STRUCT([model_3d,floor0,win])
-VIEW(model_3d)
+#VIEW(model_3d)

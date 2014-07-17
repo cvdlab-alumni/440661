@@ -1,4 +1,5 @@
 import sys
+from exercise1 import *
 """ import modules from lar-cc/lib """
 sys.path.insert(0, 'C:\Users\Andrea\lar-cc\lar-cc\lib\py')
 from simplexn import *
@@ -48,7 +49,7 @@ vertical_encl0 = PROD([vertical_encl_floor0,Q(20)])
 vertical_encl1 = T(3)(20)(PROD([vertical_encl_floor1,Q(20)]))
 vertical_enclosure = STRUCT([vertical_encl0,vertical_encl1, win])
 
-VIEW(vertical_enclosure)
+#VIEW(vertical_enclosure)
 
 
 

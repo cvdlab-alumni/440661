@@ -1,4 +1,5 @@
 import sys
+from exercise3 import *
 """ import modules from lar-cc/lib """
 sys.path.insert(0, 'C:\Users\Andrea\lar-cc\lar-cc\lib\py')
 from simplexn import *

@@ -1,4 +1,4 @@
-from exercise1 import *
+from exercise1_original import *
 from splines import *
 pink9 = [1,0.855,0.725]
 
